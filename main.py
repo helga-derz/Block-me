@@ -29,10 +29,16 @@ bonus_image = pygame.transform.scale(bonus_image, (20, 20))
 done = False
 Blocked = False
 
+gm = game.Game()
+
 while not done and not Blocked:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  # clicked close
             done = True
 
     screen.blit(bg, (0, 0))  # filling screen with colour
+
+    for wall in gm.update_walls():
+        screen.blit(wall_image, (wall[0], wall[1]))
+
     pygame.display.update()
