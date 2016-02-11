@@ -17,20 +17,28 @@ class Object:
 class Character(Object):
 
     def __init__(self):
-        self.x = 490
-        self.y = 290
+        self.x = 480
+        self.y = 280
         self.points = 0
         self.pic = self.open_image('cat.jpg')
 
-    def move(self, key):
+    def move(self, key, walls):
+        # go left
         if key == pygame.K_LEFT:
-            self.x -= 20
+            if [self.x-20, self.y] not in walls:
+                self.x -= 20
+        # go right
         if key == pygame.K_RIGHT:
-            self.x += 20
+            if [self.x+20, self.y] not in walls:
+                self.x += 20
+        # go down
         if key == pygame.K_DOWN:
-            self.y += 20
+            if [self.x, self.y+20] not in walls:
+                self.y += 20
+        # go up
         if key == pygame.K_UP:
-            self.y -= 20
+            if [self.x, self.y-20] not in walls:
+                self.y -= 20
 
 
 class Wall(Object):
@@ -82,3 +90,4 @@ class Bonus(Object):
 
 class Game:
     pass
+

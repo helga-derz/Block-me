@@ -27,13 +27,13 @@ while not done and not Blocked:
             done = True
 
         if event.type == pygame.KEYDOWN:
-            cat.move(event.key)
+            cat.move(event.key, wall.update_walls()) # here should be map
 
     screen.blit(bg, (0, 0))  # filling screen with colour
 
     for x, y in wall.update_walls():
         screen.blit(wall.pic, (x, y))
 
-    screen.blit(cat.pic, (cat.x, cat.y))
+    screen.blit(cat.pic, (cat.x, cat.y))  # draw character
 
     pygame.display.update()
