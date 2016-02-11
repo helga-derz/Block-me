@@ -19,15 +19,21 @@ done = False
 Blocked = False
 
 wall = game.Wall()
+cat = game.Character()
 
 while not done and not Blocked:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  # clicked close
             done = True
 
+        if event.type == pygame.KEYDOWN:
+            cat.move(event.key)
+
     screen.blit(bg, (0, 0))  # filling screen with colour
 
     for x, y in wall.update_walls():
         screen.blit(wall.pic, (x, y))
+
+    screen.blit(cat.pic, (cat.x, cat.y))
 
     pygame.display.update()

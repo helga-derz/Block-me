@@ -3,6 +3,7 @@ import pygame
 
 size = 20
 
+
 class Object:
 
     def __init__(self):
@@ -13,23 +14,7 @@ class Object:
         return pygame.transform.scale(image, (20, 20))
 
 
-class MovingObj(Object):
-
-    def __init__(self):
-        pass
-
-    def move(self, string):
-        if string == 'w':
-            self.y += 20
-        if string == 'a':
-            self.x -= 20
-        if string == 'd':
-            self.x += 20
-        if string == 's':
-            self.y -= 20
-
-
-class Character(MovingObj):
+class Character(Object):
 
     def __init__(self):
         self.x = 490
@@ -37,16 +22,18 @@ class Character(MovingObj):
         self.points = 0
         self.pic = self.open_image('cat.jpg')
 
-#    def update_character(self):
+    def move(self, key):
+        if key == pygame.K_LEFT:
+            self.x -= 20
+        if key == pygame.K_RIGHT:
+            self.x += 20
+        if key == pygame.K_DOWN:
+            self.y += 20
+        if key == pygame.K_UP:
+            self.y -= 20
 
 
-class StaticObj(Object):
-
-    def __init__(self):
-        pass
-
-
-class Wall(StaticObj):
+class Wall(Object):
 
     def __init__(self):
         self.pic = self.open_image('wall.jpeg')
@@ -76,7 +63,7 @@ class Wall(StaticObj):
         return walls
 
 
-class Bonus(StaticObj):
+class Bonus(Object):
 
     def __init__(self):
         self.points = random.randint(1, 5)
