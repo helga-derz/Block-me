@@ -22,18 +22,24 @@ wall = game.Wall()
 cat = game.Character()
 
 while not done and not Blocked:
+
+    screen.blit(bg, (0, 0))  # filling screen with colour
+
     for event in pygame.event.get():
+
         if event.type == pygame.QUIT:  # clicked close
             done = True
 
         if event.type == pygame.KEYDOWN:
-            cat.move(event.key, wall.update_walls()) # here should be map
+            movement = cat.move(event.key, wall.walls)
 
-    screen.blit(bg, (0, 0))  # filling screen with colour
+            if movement:
+                new_wall = wall.wall_generator(movement, [cat.x, cat.y])  # new wall appears
+                wall.walls = wall.update_walls(wall.walls, new_wall)  # adding new wall to a map
 
-    for x, y in wall.update_walls():
-        screen.blit(wall.pic, (x, y))
+        for block in wall.walls:   # drawing walls
+            screen.blit(wall.pic, (block[0], block[1]))
 
-    screen.blit(cat.pic, (cat.x, cat.y))  # draw character
+        screen.blit(cat.pic, (cat.x, cat.y))  # draw character
 
-    pygame.display.update()
+        pygame.display.update()
