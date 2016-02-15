@@ -75,16 +75,10 @@ class Wall(Object):
 
         return walls
 
-    def wall_generator(self, movement, char_coord):  # building new wall in front of character
+    def wall_generator(self, movement, game_map):  # building new wall in front of character
 
-        if movement == 'l':
-            new_wall = [char_coord[0] - 20, char_coord[1]]
-        if movement == 'r':
-            new_wall = [char_coord[0] + 20, char_coord[1]]
-        if movement == 'u':
-            new_wall = [char_coord[0], char_coord[1] - 20]
-        if movement == 'd':
-            new_wall = [char_coord[0], char_coord[1] + 20]
+        for block in game_map:
+
 
         return new_wall
 
@@ -92,6 +86,7 @@ class Wall(Object):
 class Bonus(Object):
 
     def __init__(self):
+        self.bonuses = []
         self.points = random.randint(1, 5)
         self.pic = self.open_image('bonus.png')
 
@@ -106,6 +101,32 @@ class Bonus(Object):
         return bonuses.remove(eaten_bonus)
 
 
-class Game:
-    pass
+class Map:
+
+    def __init__(self):
+        self.game_map = self.create_map()
+    # self.wall = Wall()
+    # self.bonus = Bonus()
+    # self.cat = Character()
+
+    def create_map(self):
+        game_map = {}
+        for x in range(0, 1000, size):
+            for y in range(0, 600, size):
+                game_map[[x, y]] = 0
+
+        return game_map
+
+    def update_map(self, walls, bonuses, cat):
+
+        for wall in walls:
+            self.game_map[wall[0], wall[1]] = 'wall'
+
+        for bonus in bonuses:
+            self.game_map[bonus[0], bonus[1]] = 'bonus'
+
+        self.game_map[cat[0], cat[1]] = 'cat'
+
+
+
 

@@ -18,8 +18,10 @@ bg.fill(Color(background_colour))
 done = False
 Blocked = False
 
-wall = game.Wall()
+game_map = game.Map()
 cat = game.Character()
+bonus = game.Bonus()
+wall = game.Wall()
 
 while not done and not Blocked:
 
@@ -39,6 +41,10 @@ while not done and not Blocked:
 
         for block in wall.walls:   # drawing walls
             screen.blit(wall.pic, (block[0], block[1]))
+
+        if bonus.bonuses:         # drawing bonuses if they exist
+            for block in bonus.bonuses:
+                screen.blit(bonus.pic, (block[0], block[1]))
 
         screen.blit(cat.pic, (cat.x, cat.y))  # draw character
 
