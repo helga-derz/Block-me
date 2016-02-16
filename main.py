@@ -1,29 +1,31 @@
 import pygame
 from pygame import *
 import game
+import time
+
+pygame.init()
 
 # colours
 background_colour = "#CC66CC"
+font_colour = (0, 0, 0)
 
 # окно
-size = (1000, 600)  # ширина и высота
+size = (1000, 620)  # ширина и высота
 
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('13FPL LIFE')
 
+my_font = pygame.font.SysFont("monospace", 20, bold=True)
+
 bg = Surface(size)
 bg.fill(Color(background_colour))
 
-
 done = False
-Blocked = False
 
 game_map = game.Map()
-cat = game.Character()
-bonus = game.Bonus()
-wall = game.Wall()
+KEYS_OF_MOVEMENT = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]
 
-while not done and not Blocked:
+while not done and not game_map.Blocked and not game_map.Map_Full:
 
     screen.blit(bg, (0, 0))  # filling screen with colour
 
@@ -32,20 +34,29 @@ while not done and not Blocked:
         if event.type == pygame.QUIT:  # clicked close
             done = True
 
-        if event.type == pygame.KEYDOWN:
-            movement = cat.move(event.key, wall.walls)
+        if event.type == pygame.KEYDOWN and event.key in KEYS_OF_MOVEMENT:
+            movement = game_map.cat.move(event.key, game_map.wall.walls)
 
-            if movement:
-                new_wall = wall.wall_generator(movement, [cat.x, cat.y])  # new wall appears
-                wall.walls = wall.update_walls(wall.walls, new_wall)  # adding new wall to a map
+            game_map.update_map()
 
-        for block in wall.walls:   # drawing walls
-            screen.blit(wall.pic, (block[0], block[1]))
+        for block in game_map.wall.walls:  # drawing walls
+            screen.blit(game_map.wall.pic, block)
 
-        if bonus.bonuses:         # drawing bonuses if they exist
-            for block in bonus.bonuses:
-                screen.blit(bonus.pic, (block[0], block[1]))
+        if game_map.bonus.bonuses:  # drawing bonuses if they exist
+            for block in game_map.bonus.bonuses:
+                screen.blit(game_map.bonus.pic, block)
 
-        screen.blit(cat.pic, (cat.x, cat.y))  # draw character
+        screen.blit(game_map.cat.pic, (game_map.cat.x, game_map.cat.y))  # draw character
+
+        score_string = "SCORE:{0}".format(game_map.cat.points)
+        score_label = my_font.render(score_string, 1, font_colour)
+        screen.blit(score_label, (450, 600))
 
         pygame.display.update()
+
+if game_map.Blocked:
+    time.sleep(3)
+
+print("score:", game_map.cat.points)
+
+pygame.quit()
